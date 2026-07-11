@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: ./backend
+    container_name: attendance_backend
+    volumes:
+      - ./backend:/app
+      - ./data:/app/data
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  frontend:
+    build: ./frontend
+    container_name: attendance_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
