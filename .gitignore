@@ -1,0 +1,72 @@
+# =====================
+# Python
+# =====================
+**/__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+
+# =====================
+# Variables de entorno
+# =====================
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# =====================
+# Frontend (React/Vite)
+# =====================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# =====================
+# Datos locales (runtime)
+# =====================
+data/attendance.db
+data/known_faces/
+data/*.pdf
+data/**/*.pdf
+
+# =====================
+# Testing
+# =====================
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# =====================
+# Logs
+# =====================
+*.log
+logs/
+
+# =====================
+# Docker
+# =====================
+docker-compose.override.yml
+
+# =====================
+# IDE / Editores
+# =====================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# =====================
+# Sistema operativo
+# =====================
+.DS_Store
+Thumbs.db
+Desktop.ini
