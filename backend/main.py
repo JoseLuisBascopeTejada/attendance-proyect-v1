@@ -2,6 +2,7 @@ import io
 import logging
 import math
 import os
+import shutil
 import tempfile
 from contextlib import asynccontextmanager
 from datetime import datetime
@@ -423,6 +424,36 @@ def get_students():
         ]
 
         return {"students": students}
+    finally:
+        conn.close()
+
+
+@app.delete("/api/students/{student_id}")
+def delete_student(student_id: int):
+    faces_dir = os.getenv("FACES_DIR", "/app/data/known_faces")
+    conn = get_connection()
+    try:
+        row = conn.execute(
+            "SELECT id, name FROM students WHERE id = ?", (student_id,)
+        ).fetchone()
+        if row is None:
+            raise HTTPException(status_code=404, detail="Student not found")
+
+        name = row[1]
+        conn.execute("DELETE FROM attendance WHERE student_id = ?", (student_id,))
+        conn.execute("DELETE FROM students WHERE id = ?", (student_id,))
+        conn.commit()
+
+        person_dir = Path(faces_dir) / name
+        if person_dir.is_dir():
+            shutil.rmtree(person_dir)
+
+        return {"status": "deleted", "student_id": student_id, "name": name}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception("Unhandled error in delete-student")
+        raise HTTPException(status_code=500, detail="Internal server error")
     finally:
         conn.close()
 
