@@ -1,10 +1,14 @@
 import io
+import logging
 import math
 import os
 import tempfile
 from contextlib import asynccontextmanager
 from datetime import datetime
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s")
 
 import numpy as np
 from dotenv import load_dotenv
@@ -189,7 +193,8 @@ async def register(file: UploadFile = File(...), name: str = Form(...)):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.exception("Unhandled error in register")
+        raise HTTPException(status_code=500, detail="Internal server error")
     finally:
         os.unlink(tmp_path)
 
@@ -248,7 +253,8 @@ async def recognize(file: UploadFile = File(...)):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.exception("Unhandled error in recognize")
+        raise HTTPException(status_code=500, detail="Internal server error")
     finally:
         os.unlink(tmp_path)
 
@@ -331,7 +337,8 @@ async def recognize_group(file: UploadFile = File(...)):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.exception("Unhandled error in recognize-group")
+        raise HTTPException(status_code=500, detail="Internal server error")
     finally:
         os.unlink(tmp_path)
 

@@ -8,4 +8,4 @@ RUN python -c "import cv2,os,urllib.request; \
     os.makedirs(p,exist_ok=True); \
     urllib.request.urlretrieve('https://raw.githubusercontent.com/opencv/opencv/4.x/data/haarcascades/haarcascade_frontalface_default.xml', os.path.join(p,'haarcascade_frontalface_default.xml'))"
 COPY . .
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
