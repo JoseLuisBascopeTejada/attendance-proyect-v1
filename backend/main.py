@@ -57,6 +57,12 @@ def _get_now():
     return datetime.utcnow()
 
 
+def _normalize_date_to(date_to: str | None) -> str | None:
+    if date_to and len(date_to) == 10:
+        return date_to + " 23:59:59"
+    return date_to
+
+
 def validate_upload(contents: bytes):
     max_size = int(os.getenv("MAX_FILE_SIZE_MB", "5")) * 1024 * 1024
     max_width = int(os.getenv("MAX_IMAGE_WIDTH", "1920"))
@@ -362,7 +368,7 @@ def get_attendance(
             params.append(date_from)
         if date_to:
             where_clauses.append("a.timestamp <= ?")
-            params.append(date_to)
+            params.append(_normalize_date_to(date_to))
         if student_id is not None:
             where_clauses.append("a.student_id = ?")
             params.append(student_id)
@@ -473,7 +479,7 @@ def get_report_pdf(
             params.append(date_from)
         if date_to:
             where_clauses.append("a.timestamp <= ?")
-            params.append(date_to)
+            params.append(_normalize_date_to(date_to))
 
         where_sql = (" WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
 

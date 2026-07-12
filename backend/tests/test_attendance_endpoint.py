@@ -97,3 +97,12 @@ def test_get_attendance_last_partial_page(client, registered_student, temp_db_pa
     data = resp.json()
     assert data["records"] == []
     assert data["page"] == 100
+
+
+def test_get_attendance_date_to_includes_same_day(client, registered_student, temp_db_path):
+    today = datetime.utcnow().strftime("%Y-%m-%d")
+
+    resp = client.get(f"/api/attendance?date_to={today}")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["total"] >= 1
