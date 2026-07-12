@@ -2,5 +2,11 @@ fastapi
 uvicorn[standard]
 python-multipart
 deepface
-opencv-python-headless
+opencv-python<5
 tf-keras
+python-dotenv
+pytest
+httpx
+Pillow
+numpy
+fpdf2
